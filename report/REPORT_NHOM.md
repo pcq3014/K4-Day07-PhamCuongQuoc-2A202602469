@@ -265,10 +265,10 @@ Câu trả lời chuẩn bị sẵn cho ba câu giảng viên hay hỏi:
 
 ## Tự Đánh Giá (Phần Nhóm)
 
-| Tiêu chí | Điểm tự đánh giá |
-|----------|-------------------|
-| Lựa chọn tài liệu (Document Set Quality) | / 10 |
-| Thiết kế chiến lược (Strategy Design) | / 15 |
-| Chất lượng truy xuất (Retrieval Quality) | / 10 |
-| Thuyết trình (Demo) | / 5 |
-| **Tổng phần nhóm** | **/ 40** |
+| Tiêu chí | Điểm tự đánh giá | Căn cứ |
+|----------|-------------------|--------|
+| Lựa chọn tài liệu (Document Set Quality) | 9 / 10 | 10 tài liệu đủ metadata, `sources.csv` khớp 1-1, script CP2 báo 10/10 OK, ghi rõ quá trình thu thập. Trừ 1 điểm vì 9/10 tài liệu cùng tách từ một PDF scan chép tay, nguồn chưa đa dạng |
+| Thiết kế chiến lược (Strategy Design) | 15 / 15 | 4 chiến lược không trùng nhau, baseline có thước đo "trọn câu", HeadingChunker cải tiến từ v1 lên v2 nhờ phân tích lỗi, so sánh điểm mạnh và điểm yếu của từng người |
+| Chất lượng truy xuất (Retrieval Quality) | 7 / 10 | Chấm theo rubric chính thức: tốt nhất 7/10 (Heading v2), các chiến lược còn lại 5–6/10 |
+| Thuyết trình (Demo) | 4 / 5 | Kịch bản chia đủ người và thời lượng, có câu trả lời chuẩn bị sẵn. Chưa điền phần học được từ nhóm khác |
+| **Tổng phần nhóm** | **35 / 40** | |

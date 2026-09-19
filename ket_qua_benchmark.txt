@@ -1,98 +1,97 @@
 ==============================================================================
-BENCHMARK - chien luoc: heading  (chunk_size=700)
+BENCHMARK - chien luoc: recursive  (chunk_size=500)
 Embedding backend     : sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
-Corpus                : 9 tai lieu -> 79 chunk
-Do dai chunk          : min=12 avg=400 max=751
+Corpus                : 9 tai lieu -> 93 chunk
+Do dai chunk          : min=36 avg=347 max=497
 ==============================================================================
 
-[Q1] Tôi được mượn tối đa bao nhiêu giáo trình và bao nhiêu tài liệu tham khảo cùng một lúc?
-   Gold answer : Bạn đọc có thẻ đa năng (người học) được mượn không quá 10 giáo trình và 02 tài liệu tham khảo tại một thời điểm.
-   Gold doc    : utc-thu-vien-sinh-vien   filter={'audience': 'student'}
+[Q1] Tôi muốn phúc khảo bài thi tự luận thì phải làm gì và trong thời hạn bao lâu?
+   Gold answer : Làm đơn phúc khảo điểm thi (Mẫu 12), chuyển đơn cùng phiếu đóng tiền phúc khảo đến giáo vụ Khoa/Viện của đơn vị chủ quản học phần trong vòng 14 ngày làm việc kể từ ngày điểm thi được công bố. Nộp muộn hơn phải được Trưởng đơn vị chủ quản học phần đồng ý.
+   Gold doc    : phuc-khao-nguoi-hoc   filter={'audience': 'student'}
    Top-3:
-      1. score=+0.6542  utc-thu-vien-sinh-vien#2         audience=student  <== GOLD
-         ## 2. Hạn mức mượn tài liệu về nhà của người học Tài liệu được mượn về nhà bao gồm giá...
-      2. score=+0.5905  dav-muon-tra-sinh-vien#0         audience=student  
-         # Hạn mức mượn trả tài liệu dành cho sinh viên — Học viện Ngoại giao > Tài liệu này tr...
-      3. score=+0.5883  utc-thu-vien-sinh-vien#3         audience=student  <== GOLD
-         ## 2. Hạn mức mượn tài liệu về nhà của người học Chính sách đặt cọc khi mượn tài liệu ...
+      1. score=+0.5449  phuc-khao-nguoi-hoc#1            audience=student  <== GOLD
+         Sau khi điểm số được công bố trên hệ thống của Nhà trường, người học dự thi làm đơn ph...
+      2. score=+0.5291  phuc-khao-nguoi-hoc#2            audience=student  <== GOLD
+         Đơn vị chủ quản học phần có trách nhiệm thông báo kết quả phúc khảo tới người học dự t...
+      3. score=+0.5095  phuc-khao-nguoi-hoc#0            audience=student  <== GOLD
+         # Phúc khảo — phần dành cho người học (Điều 26) > Trích các khoản của Điều 26 Quy chế ...
    => diem: 2/2  (gold o top-1 va ngu canh chua du dap an)
    --- A/B: cung cau hoi, KHONG dung metadata_filter ---
-      1. score=+0.6542  utc-thu-vien-sinh-vien#2         audience=student  <== GOLD
-         ## 2. Hạn mức mượn tài liệu về nhà của người học Tài liệu được mượn về nhà bao gồm giá...
-      2. score=+0.6260  utc-thu-vien-can-bo#2            audience=staff    
-         ## 2. Hạn mức mượn tài liệu về nhà của cán bộ, giảng viên Tài liệu được mượn về nhà ba...
-      3. score=+0.5982  dav-muon-tra-giang-vien#0        audience=faculty  
-         # Hạn mức mượn trả tài liệu dành cho giảng viên và cán bộ — Học viện Ngoại giao > Tài ...
-   => diem khong filter: 2/2  (gold o top-1 va ngu canh chua du dap an)
+      1. score=+0.6114  hinh-thuc-thoi-luong-thi#7       audience=all      
+         e) Đối với thi vấn đáp, thời lượng thi được tính theo công thức: Thời lượng thi = [(số...
+      2. score=+0.5900  hinh-thuc-thoi-luong-thi#6       audience=all      
+         c) Các học phần tổ chức thi tại phòng máy vi tính, thời gian làm bài thi tối thiểu là ...
+      3. score=+0.5876  bien-soan-de-thi#13              audience=faculty  
+         ## Điều 9. In sao đề thi 1. Đề thi được xem là hợp lệ khi có chữ ký duyệt của người ch...
+   => diem khong filter: 0/2  (gold doc vang mat trong top-3)
 
-[Q2] Sinh viên Học viện Ngoại giao được mượn tối đa bao nhiêu tài liệu in và trong bao nhiêu ngày?
-   Gold answer : Sinh viên các khóa được mượn tối đa 2 tài liệu in trong 2 ngày, gia hạn 2 lần, mỗi lần 1 ngày.
-   Gold doc    : dav-muon-tra-sinh-vien   filter=None
+[Q2] Thời lượng tối đa của một bài thi tự luận là bao nhiêu phút?
+   Gold answer : Tối thiểu 50 phút và tối đa 120 phút, tùy số tín chỉ của học phần và số câu hỏi trong đề.
+   Gold doc    : hinh-thuc-thoi-luong-thi   filter=None
    Top-3:
-      1. score=+0.7228  dav-muon-tra-giang-vien#0        audience=faculty  
-         # Hạn mức mượn trả tài liệu dành cho giảng viên và cán bộ — Học viện Ngoại giao > Tài ...
-      2. score=+0.7119  dav-muon-tra-sinh-vien#0         audience=student  <== GOLD
-         # Hạn mức mượn trả tài liệu dành cho sinh viên — Học viện Ngoại giao > Tài liệu này tr...
-      3. score=+0.6403  utc-thu-vien-sinh-vien#2         audience=student  
-         ## 2. Hạn mức mượn tài liệu về nhà của người học Tài liệu được mượn về nhà bao gồm giá...
+      1. score=+0.8890  hinh-thuc-thoi-luong-thi#7       audience=all      <== GOLD
+         e) Đối với thi vấn đáp, thời lượng thi được tính theo công thức: Thời lượng thi = [(số...
+      2. score=+0.8860  hinh-thuc-thoi-luong-thi#6       audience=all      <== GOLD
+         c) Các học phần tổ chức thi tại phòng máy vi tính, thời gian làm bài thi tối thiểu là ...
+      3. score=+0.7560  hinh-thuc-thoi-luong-thi#8       audience=all      <== GOLD
+         f) Đối với hình thức thuyết trình, báo cáo tiểu luận hoặc báo cáo đồ án, thời lượng th...
+   => diem: 2/2  (gold o top-1 va ngu canh chua du dap an)
+
+[Q3] Đến phòng thi muộn bao lâu thì không được dự thi?
+   Gold answer : Người học đến muộn quá 15 phút sau khi đã phát đề thi sẽ không được dự thi; phải có mặt tại phòng thi trước giờ thi ít nhất 15 phút.
+   Gold doc    : nguoi-hoc-du-thi   filter=None
+   Top-3:
+      1. score=+0.7594  nguoi-hoc-du-thi#2               audience=student  <== GOLD
+         Phải mang theo thẻ sinh viên, thẻ học viên hoặc giấy tờ tùy thân có thông tin cá nhân,...
+      2. score=+0.6968  phuc-khao-nguoi-hoc#1            audience=student  
+         Sau khi điểm số được công bố trên hệ thống của Nhà trường, người học dự thi làm đơn ph...
+      3. score=+0.6800  hinh-thuc-thoi-luong-thi#7       audience=all      
+         e) Đối với thi vấn đáp, thời lượng thi được tính theo công thức: Thời lượng thi = [(số...
+   => diem: 2/2  (gold o top-1 va ngu canh chua du dap an)
+
+[Q4] Hai giảng viên chấm tiểu luận lệch nhau từ 2 điểm trở lên thì xử lý thế nào?
+   Gold answer : Hai GV thảo luận để thống nhất kết quả; nếu không thống nhất được thì báo CNBM xem xét quyết định. Lệch dưới 02 điểm thì lấy trung bình cộng.
+   Gold doc    : cham-thi   filter=None
+   Top-3:
+      1. score=+0.6568  xu-ly-vi-pham-nguoi-hoc#9        audience=student  
+         **e) Xử lý người học đạo văn đối với tiểu luận, đồ án và các bài tập lớn thuộc điểm họ...
+      2. score=+0.6155  cham-thi#2                       audience=faculty  <== GOLD
+         b) Cho hai cán bộ chấm thi thống nhất điểm: Trong trường hợp hai cán bộ chấm thi thống...
+      3. score=+0.6113  cham-thi#1                       audience=faculty  <== GOLD
+         a) Cán bộ chấm thi thứ nhất xem bài thi và dùng bút xanh gạch bỏ những phần giấy không...
    => diem: 0/2  (gold doc o top-2 nhung ngu canh phu 0/1 y cua dap an)
 
-[Q3] Khu nội trú của Trường Đại học Thương mại mở cửa và đóng cửa lúc mấy giờ?
-   Gold answer : Mở cửa từ 5 giờ, đóng cửa từ 23 giờ.
-   Gold doc    : tmu-noi-quy-khu-noi-tru   filter=None
+[Q5] Những lỗi vi phạm nào khiến người học bị đình chỉ thi?
+   Gold answer : Mang tài liệu hoặc phương tiện bị cấm vào phòng thi; đưa đề thi ra ngoài khu vực thi hoặc nhận bài giải từ bên ngoài; đã bị cảnh cáo mà vẫn vi phạm; viết, vẽ nội dung không liên quan; gây rối, đe dọa, xúc phạm CBCT hoặc người học khác; không chấp hành yêu cầu của CBCT về kỷ luật phòng thi. Hậu quả: điểm 0 cho học phần.
+   Gold doc    : xu-ly-vi-pham-nguoi-hoc   filter=None
    Top-3:
-      1. score=+0.6303  tmu-noi-quy-khu-noi-tru#1        audience=student  <== GOLD
-         ## 1. Thời gian mở cửa, đóng cửa: - Mở cửa: từ 5 giờ - Đóng cửa: từ 23 giờ 2. Các phòn...
-      2. score=+0.5030  dav-muon-tra-giang-vien#3        audience=faculty  
-         ## 3. Ngày làm thủ tục mượn về Cán bộ, giảng viên làm thủ tục mượn từ thứ 2 đến thứ 7....
-      3. score=+0.4660  dav-muon-tra-sinh-vien#4         audience=student  
-         ## 4. Phòng đọc Sinh viên tầng 4 Tại khu vực này độc giả có thể trao đổi, thảo luận nh...
-   => diem: 2/2  (gold o top-1 va ngu canh chua du dap an)
-
-[Q4] Phí nội trú ký túc xá một học kỳ đối với sinh viên hệ chính quy là bao nhiêu tiền?
-   Gold answer : 600.000đ/học kỳ với sinh viên hệ chính quy và 400.000đ/học kỳ với sinh viên hệ cử tuyển.
-   Gold doc    : utc-huong-dan-ky-tuc-xa   filter=None
-   Top-3:
-      1. score=+0.7609  utc-huong-dan-ky-tuc-xa#5        audience=student  <== GOLD
-         ## 3. Mức phí đóng, nộp khi sinh viên vào KTX (được thu theo học kỳ) Áp dụng đối với s...
-      2. score=+0.6172  utc-hoc-phi-hoc-bong#1           audience=student  
-         ## 1. Một số lưu ý đối với sinh viên - Tài khoản sinh viên đủ điều kiện để thu học phí...
-      3. score=+0.6130  utc-huong-dan-ky-tuc-xa#6        audience=student  <== GOLD
-         ## 3. Mức phí đóng, nộp khi sinh viên vào KTX (được thu theo học kỳ) Đăng ký họcĐiểm t...
-   => diem: 2/2  (gold o top-1 va ngu canh chua du dap an)
-
-[Q5] Những đối tượng sinh viên nào được miễn 100% học phí?
-   Gold answer : Người có công với cách mạng và thân nhân; sinh viên tàn tật, khuyết tật thuộc hộ nghèo hoặc cận nghèo; sinh viên dân tộc thiểu số thuộc hộ nghèo, cận nghèo; sinh viên dân tộc thiểu số rất ít người ở vùng khó khăn.
-   Gold doc    : utc-che-do-chinh-sach   filter=None
-   Top-3:
-      1. score=+0.7721  utc-che-do-chinh-sach#7          audience=student  <== GOLD
-         ### 1.1. Đối tượng được miễn 100% học phí: Đối tượng được giảm 50% học phí: Sinh viên ...
-      2. score=+0.7108  utc-che-do-chinh-sach#6          audience=student  <== GOLD
-         ### 1.1. Đối tượng được miễn 100% học phí: d. Sinh viên là người dân tộc thiểu số thuộ...
-      3. score=+0.6783  utc-che-do-chinh-sach#16         audience=student  <== GOLD
-         ## 4. Hỗ trợ chi phí học tập: a. Điều kiện được hưởng: - Sinh viên là người dân tộc th...
-   => diem: 1/2  (gold o top-1, ngu canh chi phu 2/4 y cua dap an)
+      1. score=+0.8041  xu-ly-vi-pham-nguoi-hoc#4        audience=student  <== GOLD
+         **c) Đình chỉ thi:** Hình thức đình chỉ thi được áp dụng đối với người học dự thi vi p...
+      2. score=+0.7788  xu-ly-vi-pham-nguoi-hoc#2        audience=student  <== GOLD
+         **b) Cảnh cáo:** Đối với người học dự thi vi phạm một trong các lỗi sau: đã từng bị xử...
+      3. score=+0.7355  xu-ly-vi-pham-nguoi-hoc#1        audience=student  <== GOLD
+         **a) Khiển trách:** Áp dụng đối với người học dự thi vi phạm một trong các lỗi như: nh...
+   => diem: 0/2  (gold doc o top-1 nhung ngu canh phu 0/4 y cua dap an)
 
 ==============================================================================
-TONG DIEM RETRIEVAL: 7/10  (chien luoc: heading)
+TONG DIEM RETRIEVAL: 6/10  (chien luoc: recursive)
 ==============================================================================
 
 === KnowledgeBaseAgent - kiem tra grounding tren Q1 ===
-[DEMO LLM] Tra loi dua tren 3 doan ngu canh, bat dau tu [1] (nguồn: https://lib.utc.edu.vn/noi-quy/quy-%C4%91%E1%BB%8Bnh-s%E1%BB%AD-d%E1%BB%A5ng-th%C6%B0-vi%E1%BB%87n)
+[DEMO LLM] Tra loi dua tren 4 doan ngu canh, bat dau tu [1] (nguồn: https://tqa.iuh.edu.vn/wp-content/uploads/2025/12/Quyet-dinh-so-610-QD-DHCN-ve-viec-ban-hanh-Quy-che-quan-ly-cong-tac-thi-va-danh-gia-ket-qua-hoc-tap..pdf)
 
 ==============================================================================
-PHU LUC A - SO SANH 5 CHIEN LUOC TREN CUNG 5 QUERY (top-3, cung embedder)
+PHU LUC A - SO SANH 5 CHIEN LUOC TREN CUNG 5 QUERY (chunk_size=500, top-3)
 ==============================================================================
-chien luoc: heading (chunk_size=700) Corpus : 9 tai lieu -> 79 chunk Do dai chunk : min=12 avg=400 max=751 TONG DIEM RETRIEVAL: 7/10 (chien luoc: heading) 
-chien luoc: heading+overlap (chunk_size=700) Corpus : 9 tai lieu -> 79 chunk Do dai chunk : min=50 avg=523 max=901 TONG DIEM RETRIEVAL: 7/10 (chien luoc: heading+overlap) 
-chien luoc: fixed (chunk_size=700) Corpus : 9 tai lieu -> 55 chunk Do dai chunk : min=256 avg=662 max=700 TONG DIEM RETRIEVAL: 7/10 (chien luoc: fixed) 
-chien luoc: recursive (chunk_size=700) Corpus : 9 tai lieu -> 69 chunk Do dai chunk : min=29 avg=446 max=699 TONG DIEM RETRIEVAL: 5/10 (chien luoc: recursive) 
-chien luoc: sentence (chunk_size=700) Corpus : 9 tai lieu -> 70 chunk Do dai chunk : min=28 avg=440 max=1386 TONG DIEM RETRIEVAL: 7/10 (chien luoc: sentence) 
+chien luoc: recursive (chunk_size=500) Corpus : 9 tai lieu -> 93 chunk Do dai chunk : min=36 avg=347 max=497 TONG DIEM RETRIEVAL: 6/10 (chien luoc: recursive) 
+chien luoc: heading (chunk_size=500) Corpus : 9 tai lieu -> 104 chunk Do dai chunk : min=27 avg=330 max=538 TONG DIEM RETRIEVAL: 8/10 (chien luoc: heading) 
+chien luoc: heading+overlap (chunk_size=500) Corpus : 9 tai lieu -> 104 chunk Do dai chunk : min=157 avg=459 max=689 TONG DIEM RETRIEVAL: 9/10 (chien luoc: heading+overlap) 
+chien luoc: fixed (chunk_size=500) Corpus : 9 tai lieu -> 87 chunk Do dai chunk : min=139 avg=481 max=500 TONG DIEM RETRIEVAL: 7/10 (chien luoc: fixed) 
+chien luoc: sentence (chunk_size=500) Corpus : 9 tai lieu -> 67 chunk Do dai chunk : min=110 avg=483 max=1768 TONG DIEM RETRIEVAL: 8/10 (chien luoc: sentence) 
 
 ==============================================================================
-PHU LUC B - ANH HUONG CUA top_k VOI CHIEN LUOC HEADING
+PHU LUC B - ANH HUONG CUA top_k VOI CHIEN LUOC RECURSIVE (cua toi)
 ==============================================================================
-top_k=3 -> 7/10  (chien luoc: heading)
-top_k=5 -> 7/10  (chien luoc: heading)
-top_k=10 -> 7/10  (chien luoc: heading)
-top_k=15 -> 8/10  (chien luoc: heading)
+top_k=3 -> 6/10  (chien luoc: recursive)
+top_k=5 -> 6/10  (chien luoc: recursive)
+top_k=8 -> 8/10  (chien luoc: recursive)

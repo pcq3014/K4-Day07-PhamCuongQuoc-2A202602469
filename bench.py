@@ -29,11 +29,11 @@ from src import (
 )
 
 # === DÒNG DUY NHẤT MỖI THÀNH VIÊN ĐỔI ==================================
-STRATEGY = "heading"  # heading | heading+overlap | fixed | recursive | sentence
+STRATEGY = "recursive"  # heading | heading+overlap | fixed | recursive | sentence
 # =======================================================================
 
-CORPUS_DIR = Path("data/dich-vu-dai-hoc")  # corpus dịch vụ/quy định các trường ĐH tại Hà Nội
-CHUNK_SIZE = 700
+CORPUS_DIR = Path("data/khao-thi-phuc-khao")  # corpus khảo thí & phúc khảo (Quy chế 610/QĐ-ĐHCN)
+CHUNK_SIZE = 500
 
 
 class HeadingChunker:
@@ -110,58 +110,66 @@ CHUNKERS = {
 QUERIES = [
     {
         "id": "Q1",
-        "question": "Tôi được mượn tối đa bao nhiêu giáo trình và bao nhiêu tài liệu tham khảo cùng một lúc?",
-        "gold_doc": "utc-thu-vien-sinh-vien",
+        "question": "Tôi muốn phúc khảo bài thi tự luận thì phải làm gì và trong thời hạn bao lâu?",
+        "gold_doc": "phuc-khao-nguoi-hoc",
         "gold_answer": (
-            "Bạn đọc có thẻ đa năng (người học) được mượn không quá 10 giáo trình và "
-            "02 tài liệu tham khảo tại một thời điểm."
+            "Làm đơn phúc khảo điểm thi (Mẫu 12), chuyển đơn cùng phiếu đóng tiền phúc khảo đến "
+            "giáo vụ Khoa/Viện của đơn vị chủ quản học phần trong vòng 14 ngày làm việc kể từ ngày "
+            "điểm thi được công bố. Nộp muộn hơn phải được Trưởng đơn vị chủ quản học phần đồng ý."
         ),
-        "must_contain": "không được quá 10 giáo trình, 02 tài liệu tham khảo",
+        "must_contain": "trong vòng 14 ngày làm việc, kể từ ngày điểm thi được công bố",
         "metadata_filter": {"audience": "student"},
-        # Câu hỏi cố ý KHÔNG nêu người hỏi là ai. Cùng một trang quy định của
-        # ĐH GTVT đã tách thành hai tài liệu theo audience, cùng từ vựng nhưng
-        # khác đáp án (cán bộ/giảng viên: 07 giáo trình, 03 tài liệu tham khảo).
-        "ab_test": True,  # chạy hai lần: có filter và không filter
+        # Điều 26 đã được tách thành hai tài liệu theo audience: phần người học
+        # (nộp đơn, 14 ngày làm việc) và phần giảng viên (chấm phúc khảo, 05 ngày
+        # làm việc). Cùng từ vựng, khác đáp án — không lọc thì dễ trả nhầm.
+        "ab_test": True,
     },
     {
         "id": "Q2",
-        "question": "Sinh viên Học viện Ngoại giao được mượn tối đa bao nhiêu tài liệu in và trong bao nhiêu ngày?",
-        "gold_doc": "dav-muon-tra-sinh-vien",
-        "gold_answer": "Sinh viên các khóa được mượn tối đa 2 tài liệu in trong 2 ngày, gia hạn 2 lần, mỗi lần 1 ngày.",
-        "must_contain": "2 tài liệu in trong 2 ngày",
+        "question": "Thời lượng tối đa của một bài thi tự luận là bao nhiêu phút?",
+        "gold_doc": "hinh-thuc-thoi-luong-thi",
+        "gold_answer": "Tối thiểu 50 phút và tối đa 120 phút, tùy số tín chỉ của học phần và số câu hỏi trong đề.",
+        "must_contain": "tối đa là 120 phút",
         "metadata_filter": None,
     },
     {
         "id": "Q3",
-        "question": "Khu nội trú của Trường Đại học Thương mại mở cửa và đóng cửa lúc mấy giờ?",
-        "gold_doc": "tmu-noi-quy-khu-noi-tru",
-        "gold_answer": "Mở cửa từ 5 giờ, đóng cửa từ 23 giờ.",
-        "must_contain": "Đóng cửa: từ 23 giờ",
+        "question": "Đến phòng thi muộn bao lâu thì không được dự thi?",
+        "gold_doc": "nguoi-hoc-du-thi",
+        "gold_answer": (
+            "Người học đến muộn quá 15 phút sau khi đã phát đề thi sẽ không được dự thi; "
+            "phải có mặt tại phòng thi trước giờ thi ít nhất 15 phút."
+        ),
+        "must_contain": "đến muộn quá 15 phút sau khi đã phát đề thi sẽ không được dự thi",
         "metadata_filter": None,
     },
     {
         "id": "Q4",
-        "question": "Phí nội trú ký túc xá một học kỳ đối với sinh viên hệ chính quy là bao nhiêu tiền?",
-        "gold_doc": "utc-huong-dan-ky-tuc-xa",
-        "gold_answer": "600.000đ/học kỳ với sinh viên hệ chính quy và 400.000đ/học kỳ với sinh viên hệ cử tuyển.",
-        "must_contain": "600.000đ/học kỳ đối với sinh viên hệ chính quy",
+        "question": "Hai giảng viên chấm tiểu luận lệch nhau từ 2 điểm trở lên thì xử lý thế nào?",
+        "gold_doc": "cham-thi",
+        "gold_answer": (
+            "Hai GV thảo luận để thống nhất kết quả; nếu không thống nhất được thì báo CNBM "
+            "xem xét quyết định. Lệch dưới 02 điểm thì lấy trung bình cộng."
+        ),
+        "must_contain": "báo CNBM xem xét quyết định",
         "metadata_filter": None,
     },
     {
         "id": "Q5",
-        "question": "Những đối tượng sinh viên nào được miễn 100% học phí?",
-        "gold_doc": "utc-che-do-chinh-sach",
+        "question": "Những lỗi vi phạm nào khiến người học bị đình chỉ thi?",
+        "gold_doc": "xu-ly-vi-pham-nguoi-hoc",
         "gold_answer": (
-            "Người có công với cách mạng và thân nhân; sinh viên tàn tật, khuyết tật thuộc hộ nghèo "
-            "hoặc cận nghèo; sinh viên dân tộc thiểu số thuộc hộ nghèo, cận nghèo; sinh viên dân tộc "
-            "thiểu số rất ít người ở vùng khó khăn."
+            "Mang tài liệu hoặc phương tiện bị cấm vào phòng thi; đưa đề thi ra ngoài khu vực thi "
+            "hoặc nhận bài giải từ bên ngoài; đã bị cảnh cáo mà vẫn vi phạm; viết, vẽ nội dung "
+            "không liên quan; gây rối, đe dọa, xúc phạm CBCT hoặc người học khác; không chấp hành "
+            "yêu cầu của CBCT về kỷ luật phòng thi. Hậu quả: điểm 0 cho học phần."
         ),
-        # Câu hỏi dạng liệt kê: chấm theo độ phủ 4 nhóm đối tượng, không chỉ một chuỗi.
+        # Câu hỏi dạng liệt kê: chấm theo độ phủ các nhóm lỗi, không chỉ một chuỗi.
         "must_contain": [
-            "Người có công với cách mạng và thân nhân của người có công với cách mạng",
-            "Sinh viên bị tàn tật, khuyết tật thuộc diện hộ nghèo hoặc hộ cận nghèo",
-            "Sinh viên là người dân tộc thiểu số thuộc hộ nghèo và hộ cận nghèo",
-            "dân tộc thiểu số rất ít người",
+            "mang theo tài liệu hoặc phương tiện bị cấm vào phòng thi",
+            "đưa đề thi ra ngoài khu vực thi",
+            "có hành vi gây rối, lời nói hoặc cử chỉ đe dọa, xúc phạm CBCT",
+            "không chấp hành các yêu cầu của CBCT liên quan đến kỷ luật phòng thi",
         ],
         "metadata_filter": None,
     },

@@ -54,9 +54,9 @@ from src.store import EmbeddingStore
 load_dotenv(override=False)
 
 BASE_DIR = Path(__file__).resolve().parent
-CORPUS_DIR = BASE_DIR / "data" / "dich-vu-dai-hoc"
+CORPUS_DIR = BASE_DIR / "data" / "khao-thi-phuc-khao"
 WEB_DIR = BASE_DIR / "web"
-CHUNK_SIZE = 700
+CHUNK_SIZE = 500
 
 
 # --- Custom Chunker for K4-L3A Variant ---
