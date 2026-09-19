@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniRAG • Trợ Lý Tra Cứu Quy Chế & Dịch Vụ Đại Học (K4-L3A)</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="light-theme">
+  <!-- Icon sprite: stroke-based, 24x24 grid, inherits currentColor -->
+  <svg class="icon-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-logo" viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.9 8.9 0 0 1-3.9-.9L3 20.5l1.5-4.4A8.4 8.4 0 0 1 3.6 12a8.4 8.4 0 0 1 8.4-8.4h.5a8.4 8.4 0 0 1 8 8v-.1Z"/></symbol>
+    <symbol id="i-library" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></symbol>
+    <symbol id="i-flask" viewBox="0 0 24 24"><path d="M10 2v7.5L4.6 18A2 2 0 0 0 6.3 21h11.4a2 2 0 0 0 1.7-3L14 9.5V2"/><path d="M8.5 2h7"/><path d="M6.8 15h10.4"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 15l3.5-3.5 3 3L21 7"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H12v17H4.5A2.5 2.5 0 0 0 2 21.5Z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H12v17h7.5a2.5 2.5 0 0 1 2.5 2.5Z"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5v.2a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.500 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1h.2a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-scissors" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></symbol>
+    <symbol id="i-angle" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M3 21V7l12 14"/><path d="M6.5 21a3.5 3.5 0 0 0 1.2-2.6"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M6 4.5v15l13-7.5-13-7.5Z" fill="currentColor" stroke-width="1.2"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M21.5 2.5 11 13"/><path d="M21.5 2.5 15 21.5l-4-8.5-8.5-4 19-6.5Z"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></symbol>
+    <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M9 3a2 2 0 0 1 4 0v1.5h3.5a1 1 0 0 1 1 1V9H19a2 2 0 0 1 0 4h-1.5v3.5a1 1 0 0 1-1 1H13V19a2 2 0 0 1-4 0v-1.5H5.5a1 1 0 0 1-1-1V13H3a2 2 0 0 1 0-4h1.5V5.5a1 1 0 0 1 1-1H9Z"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01M12 6h.01M12 10h.01M12 14h.01"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20Z"/></symbol>
+    <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+    <symbol id="i-scroll" viewBox="0 0 24 24"><path d="M19 17V5a2 2 0 0 0-2-2H5"/><path d="M8 21h11a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V7a2 2 0 0 1 2-2"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></symbol>
+    <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="m8.2 13.4-1.4 7.6L12 18.5l5.2 2.5-1.4-7.6"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4L12 3Z"/><path d="M19 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
+  </svg>
+
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="brand-badge">
+          <div class="brand-icon"><svg class="icon" aria-hidden="true"><use href="#i-logo"/></svg></div>
+          <div class="brand-text">
+            <div class="brand-title">UniRAG <span class="brand-tag">K4-L3A</span></div>
+            <div class="brand-sub">Trợ Lý Quy Chế & Dịch Vụ Đại Học Hà Nội</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <!-- Tab Navigation -->
+        <nav class="nav-tabs" role="tablist">
+          <button class="nav-tab active" data-tab="chat" id="tab-btn-chat">
+            <span class="tab-icon"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg></span>
+            <span class="tab-label">Hỏi Đáp RAG</span>
+          </button>
+          <button class="nav-tab" data-tab="knowledge" id="tab-btn-knowledge">
+            <span class="tab-icon"><svg class="icon" aria-hidden="true"><use href="#i-library"/></svg></span>
+            <span class="tab-label">Kho Tri Thức</span>
+            <span class="tab-badge" id="doc-count-badge">10</span>
+          </button>
+          <button class="nav-tab" data-tab="playground" id="tab-btn-playground">
+            <span class="tab-icon"><svg class="icon" aria-hidden="true"><use href="#i-flask"/></svg></span>
+            <span class="tab-label">Lab Chunking & Cosine</span>
+          </button>
+          <button class="nav-tab" data-tab="benchmark" id="tab-btn-benchmark">
+            <span class="tab-icon"><svg class="icon" aria-hidden="true"><use href="#i-chart"/></svg></span>
+            <span class="tab-label">Đánh Giá Benchmark</span>
+            <span class="tab-pill">5 Queries</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <div class="status-indicator" title="Trạng thái hệ thống RAG">
+          <span class="status-dot pulsing"></span>
+          <span class="status-text" id="backend-status-text">RAG Sẵn sàng</span>
+        </div>
+        <button class="icon-btn" id="btn-guide-modal" title="Hướng dẫn & Tiêu chí bài tập">
+          <svg class="icon" aria-hidden="true"><use href="#i-book"/></svg>
+        </button>
+        <button class="icon-btn" id="btn-theme-toggle" title="Chuyển đổi giao diện Sáng / Tối">
+          <span id="theme-icon"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- ================= TAB 1: RAG CHAT ================= -->
+      <section class="tab-view active" id="view-chat">
+        <div class="chat-layout">
+          
+          <!-- Left Control Panel -->
+          <aside class="chat-sidebar">
+            
+            <!-- Preset Questions -->
+            <div class="sidebar-card">
+              <div class="sidebar-card-header">
+                <span class="header-icon"><svg class="icon" aria-hidden="true"><use href="#i-zap"/></svg></span>
+                <h3>Câu Hỏi Mẫu Chuẩn (Benchmark)</h3>
+              </div>
+              <p class="sidebar-hint">Nhấp nhanh để thử nghiệm các tình huống kiểm thử K4-L3A:</p>
+              <div class="preset-chips-list">
+                <button class="preset-chip" data-query="Tôi được mượn tối đa bao nhiêu giáo trình và bao nhiêu tài liệu tham khảo cùng một lúc?" data-audience="student" data-school="utc">
+                  <span class="chip-code">Q1</span>
+                  <span class="chip-text">Mượn giáo trình & tham khảo (UTC)</span>
+                  <span class="chip-target audience-student">student</span>
+                </button>
+                
+                <button class="preset-chip" data-query="Sinh viên Học viện Ngoại giao được mượn tối đa bao nhiêu tài liệu in và trong bao nhiêu ngày?" data-audience="all" data-school="dav">
+                  <span class="chip-code">Q2</span>
+                  <span class="chip-text">Mượn sách HV Ngoại giao (DAV)</span>
+                  <span class="chip-target">all</span>
+                </button>
+
+                <button class="preset-chip" data-query="Khu nội trú của Trường Đại học Thương mại mở cửa và đóng cửa lúc mấy giờ?" data-audience="all" data-school="tmu">
+                  <span class="chip-code">Q3</span>
+                  <span class="chip-text">Giờ mở / đóng cửa KTX (TMU)</span>
+                  <span class="chip-target">all</span>
+                </button>
+
+                <button class="preset-chip" data-query="Phí nội trú ký túc xá một học kỳ đối với sinh viên hệ chính quy là bao nhiêu tiền?" data-audience="all" data-school="utc">
+                  <span class="chip-code">Q4</span>
+                  <span class="chip-text">Phí KTX hệ chính quy (UTC)</span>
+                  <span class="chip-target">all</span>
+                </button>
+
+                <button class="preset-chip" data-query="Những đối tượng sinh viên nào được miễn 100% học phí?" data-audience="all" data-school="utc">
+                  <span class="chip-code">Q5</span>
+                  <span class="chip-text">Miễn 100% học phí (Chính sách UTC)</span>
+                  <span class="chip-target">all</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Parameters Filter Card -->
+            <div class="sidebar-card">
+              <div class="sidebar-card-header">
+                <span class="header-icon"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg></span>
+                <h3>Cấu Hình Tìm Kiếm RAG</h3>
+              </div>
+              
+              <!-- Audience Filter -->
+              <div class="form-group">
+                <label for="filter-audience">
+                  <span>Đối tượng độc giả (Metadata Filter)</span>
+                  <span class="info-tooltip" title="Lọc siêu dữ liệu trước khi xếp hạng (pre-filtering) để tránh lấy nhầm quy định cán bộ"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg></span>
+                </label>
+                <div class="select-wrapper">
+                  <select id="filter-audience" class="custom-select">
+                    <option value="all">Tất cả độc giả (all)</option>
+                    <option value="student" selected>Sinh viên / Học viên (student)</option>
+                    <option value="faculty">Cán bộ / Giảng viên (faculty)</option>
+                    <option value="staff">Nhân viên thư viện (staff)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Top-K Slider -->
+              <div class="form-group">
+                <div class="slider-header">
+                  <label for="slider-topk">Số lượng Chunks truy xuất (Top-K)</label>
+                  <span class="slider-value" id="val-topk">3</span>
+                </div>
+                <input type="range" id="slider-topk" min="1" max="8" value="3" class="custom-slider">
+                <div class="slider-ticks">
+                  <span>1</span>
+                  <span>3 (Chuẩn)</span>
+                  <span>5</span>
+                  <span>8</span>
+                </div>
+              </div>
+
+              <!-- Strategy Selection -->
+              <div class="form-group">
+                <label for="select-strategy">Chiến lược Chunking</label>
+                <div class="select-wrapper">
+                  <select id="select-strategy" class="custom-select">
+                    <option value="heading" selected>HeadingChunker (Theo mục quy định - Tối ưu)</option>
+                    <option value="heading+overlap">Heading + Overlap 150 ký tự</option>
+                    <option value="recursive">RecursiveChunker (Đệ quy ký tự)</option>
+                    <option value="fixed">FixedSizeChunker (Cố định 700 chars)</option>
+                    <option value="sentence">SentenceChunker (Tách câu)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Search Mode -->
+              <div class="form-group">
+                <label for="select-mode">Chế độ Tìm kiếm</label>
+                <div class="select-wrapper">
+                  <select id="select-mode" class="custom-select">
+                    <option value="hybrid" selected>Semantic Hybrid (chính xác cao)</option>
+                    <option value="mock">Lab MockEmbedder (thuần giả lập)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="sidebar-footer-stat">
+                <span class="text-muted">Corpus:</span>
+                <strong id="sidebar-corpus-stat">10 tài liệu • 79 chunks</strong>
+              </div>
+
+            </div>
+          </aside>
+
+          <!-- Right Chat Stage -->
+          <div class="chat-stage">
+            <div class="chat-stage-header">
+              <div class="chat-stage-title">
+                <span class="chat-online-dot"></span>
+                <span>Hỏi Đáp Quy Chế & Đối Chiếu Ngữ Cảnh Grounding</span>
+              </div>
+              <button type="button" class="btn-clear-chat" id="btn-clear-chat" title="Bắt đầu phiên hỏi đáp mới">
+                <span>🔄 Làm Mới Chat</span>
+              </button>
+            </div>
+            
+            <!-- Message Feed -->
+            <div class="chat-messages" id="chat-messages">
+              
+              <!-- Welcome Bot Message -->
+              <div class="message-row assistant">
+                <div class="avatar assistant-avatar"><svg class="icon" aria-hidden="true"><use href="#i-logo"/></svg></div>
+                <div class="message-bubble">
+                  <div class="message-meta">
+                    <span class="sender-name">UniRAG Assistant</span>
+                    <span class="meta-tag">Hệ Thống RAG Cơ Sở Tri Thức</span>
+                  </div>
+                  <div class="message-text">
+                    <p>Xin chào! Tôi là trợ lý tra cứu cơ sở tri thức về <strong>Quy chế & Dịch vụ Đại học</strong> (ĐH GTVT, HV Ngoại Giao, ĐH Thương Mại, ĐH Công Nghiệp Hà Nội...).</p>
+                    <p>Mỗi câu trả lời của tôi đều được <strong>truy xuất và trích dẫn trực tiếp [1], [2]</strong> từ tài liệu quy định thực tế của các trường, tuyệt đối không bịa đặt thông tin.</p>
+                    <div class="welcome-quick-actions">
+                      <span>Bạn có thể chọn nhanh một câu hỏi bên trái hoặc gõ câu hỏi bất kỳ bên dưới!</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Chat Input Box -->
+            <div class="chat-input-container">
+              <form id="chat-form" class="chat-form">
+                <div class="input-wrapper">
+                  <textarea 
+                    id="chat-input" 
+                    placeholder="Đặt câu hỏi về quy định mượn sách, học phí, học bổng, ký túc xá..." 
+                    rows="1"
+                    required
+                  ></textarea>
+                  <button type="button" class="btn-clear-input" id="btn-clear-input" title="Xóa nội dung" style="display: none;"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+                </div>
+                <button type="submit" class="btn-send" id="btn-send" title="Gửi câu hỏi">
+                  <span class="btn-send-icon"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></span>
+                  <span class="btn-send-label">Gửi</span>
+                </button>
+              </form>
+              <div class="input-subbar">
+                <span>Nhấn <code>Enter</code> để gửi, <code>Shift + Enter</code> để xuống dòng.</span>
+                <span class="filter-indicator">Đang lọc: <strong id="current-filter-indicator">Sinh viên (student)</strong></span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= TAB 2: KNOWLEDGE BASE ================= -->
+      <section class="tab-view" id="view-knowledge">
+        <div class="knowledge-container">
+          
+          <!-- Knowledge Toolbar -->
+          <div class="toolbar-card">
+            <div class="toolbar-left">
+              <div class="search-box">
+                <span class="search-icon"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+                <input type="text" id="search-docs-input" placeholder="Tìm kiếm tài liệu theo tên, trường hoặc từ khóa...">
+              </div>
+              
+              <!-- Filter School Pills -->
+              <div class="school-filter-pills" id="school-filter-container">
+                <button class="filter-pill active" data-school="all">Tất cả (10)</button>
+                <button class="filter-pill" data-school="ĐH Giao thông vận tải">ĐH GTVT</button>
+                <button class="filter-pill" data-school="Học viện Ngoại giao">HV Ngoại Giao</button>
+                <button class="filter-pill" data-school="ĐH Thương mại">ĐH Thương Mại</button>
+                <button class="filter-pill" data-school="ĐH Công nghiệp Hà Nội">ĐH Công Nghiệp</button>
+              </div>
+            </div>
+
+            <div class="toolbar-right">
+              <button class="btn btn-primary" id="btn-open-add-doc">
+                <svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>
+                <span>Thêm Tài Liệu Mới</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Documents Grid -->
+          <div class="docs-grid" id="docs-grid">
+            <!-- Rendered by JS -->
+            <div class="loading-spinner-box">
+              <div class="spinner"></div>
+              <span>Đang tải danh sách tài liệu...</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= TAB 3: PLAYGROUND ================= -->
+      <section class="tab-view" id="view-playground">
+        <div class="playground-container">
+          
+          <!-- Section 1: Live Chunking Comparison -->
+          <div class="lab-section">
+            <div class="section-header">
+              <div class="section-title-wrap">
+                <span class="section-icon"><svg class="icon" aria-hidden="true"><use href="#i-scissors"/></svg></span>
+                <div>
+                  <h2>So Sánh Các Chiến Lược Chia Nhỏ Văn Bản (Chunking Comparison)</h2>
+                  <p class="section-subtitle">Thử nghiệm và phân tích sự khác biệt giữa <code>HeadingChunker</code>, <code>RecursiveChunker</code>, <code>FixedSizeChunker</code> và <code>SentenceChunker</code>.</p>
+                </div>
+              </div>
+
+              <!-- Preset Sample Texts -->
+              <div class="preset-dropdown-wrap">
+                <label>Văn bản mẫu:</label>
+                <select id="preset-chunk-sample" class="custom-select">
+                  <option value="utc_lib">Quy định Thư viện UTC (Có nhiều mục ##)</option>
+                  <option value="tmu_dorm">Nội quy KTX ĐH Thương Mại (Quy định giờ giấc & phòng ở)</option>
+                  <option value="utc_policy">Chính sách Miễn giảm Học phí (Nhiều điều khoản phức tạp)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="chunking-lab-layout">
+              <div class="chunking-input-col">
+                <div class="input-header-row">
+                  <label for="chunk-input-text"><strong>Văn bản đầu vào (Input Markdown / Text):</strong></label>
+                  <span class="char-counter" id="chunk-char-counter">0 ký tự</span>
+                </div>
+                <textarea id="chunk-input-text" class="custom-textarea" rows="12" placeholder="Dán văn bản quy định hoặc văn bản bất kỳ cần chia chunk vào đây..."></textarea>
+                
+                <div class="chunk-params-bar">
+                  <div class="param-item">
+                    <label for="chunk-param-size">Chunk Size:</label>
+                    <input type="number" id="chunk-param-size" value="700" min="100" max="2000" step="50" class="custom-input-number">
+                  </div>
+                  <div class="param-item">
+                    <label for="chunk-param-overlap">Overlap:</label>
+                    <input type="number" id="chunk-param-overlap" value="0" min="0" max="400" step="20" class="custom-input-number">
+                  </div>
+                  <button class="btn btn-primary" id="btn-run-chunk-comparison">
+                    <svg class="icon" aria-hidden="true"><use href="#i-zap"/></svg><span>Phân tích &amp; so sánh</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Live Comparison Output Grid -->
+              <div class="chunking-results-col">
+                <div class="strategy-cards-grid" id="chunking-results-grid">
+                  <!-- Rendered dynamically -->
+                  <div class="empty-state-hint">
+                    <span>Nhấn "Phân Tích & So Sánh Ngay" để xem kết quả các chiến lược.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Cosine Similarity Visualizer -->
+          <div class="lab-section">
+            <div class="section-header">
+              <div class="section-title-wrap">
+                <span class="section-icon"><svg class="icon" aria-hidden="true"><use href="#i-angle"/></svg></span>
+                <div>
+                  <h2>Tính Toán Độ Tương Đồng Cosine (Cosine Similarity Visualizer)</h2>
+                  <p class="section-subtitle">Minh họa không gian vector và đo lường sự tương đồng ngữ nghĩa giữa 2 câu theo Bài tập 1.1.</p>
+                </div>
+              </div>
+
+              <!-- Quick Pair Presets -->
+              <div class="preset-dropdown-wrap">
+                <label>Cặp câu ví dụ:</label>
+                <select id="preset-similarity-pairs" class="custom-select">
+                  <option value="high">Cặp câu tương tự CAO (Quy định mượn sách thư viện)</option>
+                  <option value="low">Cặp câu tương tự THẤP (Mượn sách vs Miễn học phí)</option>
+                  <option value="zero">Cặp câu KHÔNG liên quan (Quy chế đào tạo vs Lập trình Python)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="similarity-grid">
+              <div class="similarity-input-card">
+                <label for="sim-text-1"><strong>Văn bản 1 (Query hoặc Câu A):</strong></label>
+                <textarea id="sim-text-1" class="custom-textarea" rows="3">Bạn đọc có thẻ đa năng được mượn không quá 10 giáo trình và 02 tài liệu tham khảo.</textarea>
+              </div>
+
+              <div class="similarity-action-center">
+                <button class="btn btn-secondary" id="btn-calc-similarity">
+                  <svg class="icon" aria-hidden="true"><use href="#i-target"/></svg><span>Tính Cosine</span>
+                </button>
+              </div>
+
+              <div class="similarity-input-card">
+                <label for="sim-text-2"><strong>Văn bản 2 (Tài liệu hoặc Câu B):</strong></label>
+                <textarea id="sim-text-2" class="custom-textarea" rows="3">Sinh viên được phép mượn tối đa mười cuốn sách giáo trình về nhà để phục vụ học tập.</textarea>
+              </div>
+            </div>
+
+            <!-- Visual Similarity Gauge / Score Bar -->
+            <div class="similarity-result-box" id="similarity-result-box">
+              <div class="sim-score-meter-container">
+                <div class="sim-meter-header">
+                  <span>Độ Tương Đồng Cosine (Cosine Similarity):</span>
+                  <strong class="sim-score-number" id="sim-score-val">0.8245</strong>
+                </div>
+                <div class="sim-meter-bar-track">
+                  <div class="sim-meter-bar-fill" id="sim-meter-fill" style="width: 82%;"></div>
+                </div>
+                <div class="sim-meter-scale">
+                  <span>-1.0 (Trái ngược)</span>
+                  <span>0.0 (Không tương quan)</span>
+                  <span>+0.5 (Tương đồng vừa)</span>
+                  <span>+1.0 (Đồng nhất)</span>
+                </div>
+              </div>
+              <div class="sim-explanation" id="sim-explanation-text">
+                Độ tương đồng cosine cao cho thấy hai đoạn văn bản có hướng vector gần trùng khớp trong không gian embedding.
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= TAB 4: BENCHMARK ================= -->
+      <section class="tab-view" id="view-benchmark">
+        <div class="benchmark-container">
+          
+          <!-- Benchmark Summary Banner -->
+          <div class="bench-hero-card">
+            <div class="bench-hero-left">
+              <div class="bench-badge-row">
+                <span class="badge badge-gold">Lab 7 Evaluation Rubric</span>
+                <span class="badge badge-outline">K4-L3A Variant</span>
+              </div>
+              <h1 class="bench-title">Đánh Giá Hiệu Năng 5 Câu Hỏi Chuẩn</h1>
+              <p class="bench-desc">Chạy kiểm thử tự động trên toàn bộ corpus với các tiêu chí: Gold Document Retrieval, Grounding Content Verification (<code>must_contain</code>), và A/B Testing bộ lọc siêu dữ liệu.</p>
+              
+              <div class="bench-actions-row">
+                <div class="form-inline">
+                  <label for="bench-select-strategy">Chiến lược:</label>
+                  <select id="bench-select-strategy" class="custom-select">
+                    <option value="heading" selected>HeadingChunker (Mặc định)</option>
+                    <option value="heading+overlap">Heading + Overlap 150</option>
+                    <option value="fixed">FixedSizeChunker</option>
+                    <option value="recursive">RecursiveChunker</option>
+                    <option value="sentence">SentenceChunker</option>
+                  </select>
+                </div>
+                <button class="btn btn-primary btn-large" id="btn-run-benchmark">
+                  <svg class="icon" aria-hidden="true"><use href="#i-play"/></svg>
+                  <span>Chạy Toàn Bộ Benchmark Ngay</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Score Summary Radial / Stats -->
+            <div class="bench-hero-right">
+              <div class="score-card-box">
+                <div class="score-label">Tổng Điểm Đạt Được</div>
+                <div class="score-big" id="bench-total-score">-- / 10</div>
+                <div class="score-percentage" id="bench-percentage">Chưa chạy kiểm thử</div>
+                <div class="score-breakdown-mini">
+                  <span>5 câu hỏi • Tối đa 2 điểm/câu</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Benchmark Detailed Table & Cards -->
+          <div class="bench-details-card">
+            <div class="bench-card-header">
+              <h3>Chi Tiết Từng Câu Hỏi Benchmark</h3>
+              <div class="scoring-legend">
+                <span class="legend-item"><span class="dot dot-green"></span> 2đ: Gold ở Top-1 & Đầy đủ nội dung</span>
+                <span class="legend-item"><span class="dot dot-yellow"></span> 1đ: Gold ở Top-3</span>
+                <span class="legend-item"><span class="dot dot-red"></span> 0đ: Không tìm thấy Gold</span>
+              </div>
+            </div>
+
+            <div class="bench-queries-list" id="bench-queries-list">
+              <!-- Rendered dynamically -->
+              <div class="empty-state-bench">
+                <div class="empty-icon"><svg class="icon" aria-hidden="true"><use href="#i-chart"/></svg></div>
+                <p>Nhấn <strong>"Chạy Toàn Bộ Benchmark Ngay"</strong> để xem bảng phân tích chi tiết từng câu hỏi.</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Phụ Lục A: So Sánh 5 Chiến Lược Chunking -->
+          <div class="bench-details-card" style="margin-top: 1.5rem;" id="bench-comparison-section">
+            <div class="bench-card-header">
+              <h3>📋 Phụ Lục A — So Sánh Toàn Diện 5 Chiến Lược Chunking</h3>
+              <span class="meta-chip" style="background: var(--primary-light); color: var(--primary); font-weight: 700;">Lab 7 Benchmark Standard</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.2rem;">
+              Kết quả đánh giá trên cùng bộ 9 tài liệu quy định và 5 câu hỏi chuẩn (Top-3) theo tài liệu <code>bench.py</code> và <code>docs/SCORING.md</code>.
+            </p>
+            <div class="strategies-comparison-table-wrapper" id="strategies-comparison-table-wrapper">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- Document Details Modal -->
+  <div class="modal-backdrop" id="doc-modal" style="display: none;">
+    <div class="modal-window modal-large">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <span class="modal-badge" id="modal-doc-school">ĐH GTVT</span>
+          <h3 id="modal-doc-title">Tên tài liệu quy chế</h3>
+        </div>
+        <button class="btn-close-modal" id="btn-close-doc-modal"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- 4-Tile Metadata Grid -->
+        <div class="doc-meta-grid" id="modal-doc-meta">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Segmented Control Tabs -->
+        <div class="doc-tabs-nav">
+          <button class="doc-tab-btn active" data-tab="rendered">
+            <span class="tab-icon"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg></span>
+            <span>Văn Bản Định Dạng</span>
+          </button>
+          <button class="doc-tab-btn" data-tab="chunks">
+            <span class="tab-icon"><svg class="icon" aria-hidden="true"><use href="#i-puzzle"/></svg></span>
+            <span>Các Chunks Đã Chia (<span id="modal-chunk-count-pill">0</span>)</span>
+          </button>
+          <button class="doc-tab-btn" data-tab="raw">
+            <span class="tab-icon"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg></span>
+            <span>Mã Nguồn Markdown (Raw)</span>
+          </button>
+        </div>
+
+        <!-- Tab 1: Rendered Document (Default) -->
+        <div class="doc-tab-content active" id="modal-tab-rendered">
+          <div class="rendered-document-view" id="modal-doc-rendered">
+            <!-- Rendered Beautiful Markdown HTML -->
+          </div>
+        </div>
+
+        <!-- Tab 2: Chunks Grid -->
+        <div class="doc-tab-content" id="modal-tab-chunks">
+          <div class="modal-chunks-grid" id="modal-doc-chunks">
+            <!-- Rendered Chunks Cards -->
+          </div>
+        </div>
+
+        <!-- Tab 3: Raw Markdown -->
+        <div class="doc-tab-content" id="modal-tab-raw">
+          <div class="raw-code-container">
+            <pre class="raw-markdown-view" id="modal-doc-raw"></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btn-copy-doc-content">
+          <svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg><span>Sao chép nội dung</span>
+        </button>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline" id="modal-doc-source-link">
+          <svg class="icon" aria-hidden="true"><use href="#i-link"/></svg><span>Mở trang nguồn</span><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+        <button class="btn btn-primary" id="btn-close-doc-modal-bottom">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prompt Inspector Modal -->
+  <div class="modal-backdrop" id="prompt-modal" style="display: none;">
+    <div class="modal-window modal-medium">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <span class="modal-badge badge-purple">Explainability</span>
+          <h3>Prompt Gửi Cho Mô Hình RAG (Grounding Context)</h3>
+        </div>
+        <button class="btn-close-modal" id="btn-close-prompt-modal"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">Đây là cấu trúc prompt thực tế được tạo bởi <code>KnowledgeBaseAgent._build_prompt</code> bao gồm các đoạn ngữ cảnh đánh số <code>[1]</code>, <code>[2]</code> và nguyên tắc chỉ trả lời dựa trên tài liệu.</p>
+        <pre class="prompt-code-view" id="modal-prompt-content"></pre>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btn-copy-prompt"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg><span>Sao chép Prompt</span></button>
+        <button class="btn btn-primary" id="btn-close-prompt-modal-bottom">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Document Modal -->
+  <div class="modal-backdrop" id="add-doc-modal" style="display: none;">
+    <div class="modal-window modal-medium">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <span class="modal-badge badge-blue">Corpus Extension</span>
+          <h3>Thêm Tài Liệu Mới Vào Kho Tri Thức</h3>
+        </div>
+        <button class="btn-close-modal" id="btn-close-add-doc"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <form id="add-doc-form">
+          <div class="form-group">
+            <label for="add-doc-title">Tiêu đề tài liệu:</label>
+            <input type="text" id="add-doc-title" class="custom-input" placeholder="Ví dụ: Quy định học bổng khuyến khích học tập..." required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="add-doc-filename">Tên tệp (.md):</label>
+              <input type="text" id="add-doc-filename" class="custom-input" placeholder="utc-hoc-bong-2026.md" required>
+            </div>
+            <div class="form-group">
+              <label for="add-doc-audience">Đối tượng áp dụng (Audience):</label>
+              <select id="add-doc-audience" class="custom-select">
+                <option value="student" selected>Sinh viên (student)</option>
+                <option value="faculty">Giảng viên / Cán bộ (faculty)</option>
+                <option value="staff">Nhân viên (staff)</option>
+                <option value="all">Tất cả (all)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="add-doc-dept">Đơn vị / Phòng ban:</label>
+              <input type="text" id="add-doc-dept" class="custom-input" placeholder="phong-ctsv hoặc thu-vien">
+            </div>
+            <div class="form-group">
+              <label for="add-doc-url">Đường dẫn nguồn (Source URL):</label>
+              <input type="url" id="add-doc-url" class="custom-input" placeholder="https://utc.edu.vn/...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="add-doc-content">Nội dung văn bản (Hỗ trợ định dạng Markdown):</label>
+            <textarea id="add-doc-content" class="custom-textarea" rows="8" placeholder="## 1. Điều kiện xét học bổng&#10;Sinh viên đạt điểm rèn luyện tốt..." required></textarea>
+          </div>
+          <div class="modal-footer-inline">
+            <button type="submit" class="btn btn-primary" id="btn-submit-doc">Lưu và Nạp Vào Kho Tri Thức</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guide / About Modal -->
+  <div class="modal-backdrop" id="guide-modal" style="display: none;">
+    <div class="modal-window modal-medium">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <span class="modal-badge badge-gold">Lab 7 Guide</span>
+          <h3>Giới Thiệu Dự Án UniRAG (Biến Thể K4-L3A)</h3>
+        </div>
+        <button class="btn-close-modal" id="btn-close-guide"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="modal-body guide-content">
+        <h4><svg class="icon" aria-hidden="true"><use href="#i-target"/></svg>Mục tiêu bài học (Day 7)</h4>
+        <p>Xây dựng hệ thống RAG (Retrieval-Augmented Generation) hoàn chỉnh từ nền tảng: thuật toán Vector Store, tính toán Cosine Similarity, các chiến lược Chunking (cắt theo tiêu đề văn bản quy định <code>HeadingChunker</code>), lọc metadata đối tượng độc giả (<code>audience: student</code>) và kiểm thử chất lượng truy xuất.</p>
+
+        <h4><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg>Thang điểm kiểm thử (10 điểm truy xuất)</h4>
+        <ul>
+          <li><strong>2 điểm/câu:</strong> Đoạn tài liệu chuẩn (Gold Doc) nằm ở vị trí Top-1 VÀ ngữ cảnh chứa đủ câu trả lời chuẩn (<code>must_contain</code>).</li>
+          <li><strong>1 điểm/câu:</strong> Tài liệu chuẩn lọt vào Top-3 nhưng không ở Top-1 hoặc thiếu một phần ý.</li>
+          <li><strong>0 điểm:</strong> Không truy xuất được tài liệu chuẩn trong Top-3.</li>
+        </ul>
+
+        <h4><svg class="icon" aria-hidden="true"><use href="#i-sparkle"/></svg>Điểm nổi bật của biến thể L3A</h4>
+        <p>Quy định đại học được phân hóa theo <strong>audience</strong> (người học vs cán bộ giảng viên). Nếu không có bộ lọc <code>metadata_filter={"audience": "student"}</code>, câu hỏi về hạn mức mượn sách có thể nhầm lẫn sang quy định của cán bộ giảng viên.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="btn-close-guide-bottom">Đã hiểu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- App Script -->
+  <script src="app.js" defer></script>
+</body>
+</html>
